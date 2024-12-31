@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 상단바-->
+    <header>
+      <div><a href="/">CCTV</a></div>
+      <div class="header_buttons">
+        <button onclick=""></button>
+        <button onclick=""></button>
+        <button onclick=""></button>
+        <button onclick=""></button>
+        <button onclick=""></button>
+      </div>
+    </header>
+    <!-- 사이드바-->
+    <nav>
+      <ul>
+        <li><a href="/"></a></li>
+        <li><a href="/"></a></li>
+        <li><a href="/"></a></li>
+        <li><a href="/"></a></li>
+        <li><a href="/"></a></li>
+        <li><a href="/"></a></li>
+        <li><a href="/"></a></li>
+      </ul>
+    </nav>
+    <!-- 본문영역-->
+    <div class="main-content">{% block content %} {% endblock %}</div>
+  </body>
+</html>
