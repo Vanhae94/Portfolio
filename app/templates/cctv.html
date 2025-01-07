@@ -9,16 +9,15 @@
     <h1>실시간 모니터링</h1>
     <hr>
     <div id="webcam-container">
-        <!-- 각 CCTV의 웹캠 컨테이너 -->
+        <!-- 각 CCTV의 웹캠 스트리밍 -->
         {% for cctv in cctvs %}
         <div id="webcam-{{ cctv.cctv_id }}" class="webcam-feed" style="display: {% if loop.first %}block{% else %}none{% endif %};">
             <h2>{{ cctv.location }} (CCTV ID: {{ cctv.cctv_id }})</h2>
-            <video autoplay playsinline id="video-{{ cctv.cctv_id }}"></video>
+            <img src="{{ url_for('main.video_feed', camera_index=loop.index0) }}" id="stream-{{ cctv.cctv_id }}" />
         </div>
         {% endfor %}
     </div>
 </div>
-
 <!-- 버튼 컨테이너 -->
 <div class="button-container">
     {% for cctv in cctvs %}
@@ -27,26 +26,6 @@
 </div>
 
 <script>
-    async function startAllWebcams(cctvs) {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-        cctvs.forEach((cctv, index) => {
-            const videoElement = document.getElementById(`video-${cctv.cctv_id}`);
-            if (videoDevices[index]) {
-                navigator.mediaDevices.getUserMedia({
-                    video: { deviceId: videoDevices[index].deviceId },
-                }).then(stream => {
-                    videoElement.srcObject = stream;
-                }).catch(error => {
-                    console.error(`웹캠(${cctv.cctv_id}) 접근 실패:`, error);
-                });
-            } else {
-                console.error(`CCTV ID(${cctv.cctv_id})에 해당하는 웹캠이 없습니다.`);
-            }
-        });
-    }
-
     function showCCTV(cctvId) {
         const webcamFeeds = document.querySelectorAll('.webcam-feed');
         webcamFeeds.forEach(feed => feed.style.display = 'none');
@@ -54,10 +33,10 @@
         if (selectedFeed) selectedFeed.style.display = 'block';
     }
 
-    // 페이지 로드 시 모든 웹캠 실행
+    // 페이지 로드 시 첫 번째 CCTV 화면 표시
     window.onload = () => {
         const cctvsData = {{ cctvs|tojson }};
-        startAllWebcams(cctvsData);
+        showCCTV(cctvsData[0].cctv_id);
     };
 </script>
 {% endblock %}

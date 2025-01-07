@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response
 from app import db, bcrypt
 from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog
+from .utils import load_yolov8_model
+import cv2
 
 main = Blueprint('main', __name__)
 
@@ -12,14 +14,43 @@ def require_login():
 
 @main.route('/')
 def index():
-    cctvs = CCTV.query.all()
-    cctvs_data = [cctv.to_dict() for cctv in cctvs]
-    return render_template('cctv.html', cctvs=cctvs_data)
+    cctvs = CCTV.query.all()  # CCTV 객체 리스트
+    cctv_list = [cctv.to_dict() for cctv in cctvs]  # 딕셔너리 리스트로 변환
+    return render_template('cctv.html', cctvs=cctv_list)  # index.html에 데이터 전달
 
-@main.route('/webcam/<cctv_id>')
-def webcam_view(cctv_id):
-    cctv = CCTV.query.filter_by(cctv_id=cctv_id).first_or_404()
-    return render_template('webcam_view.html', cctv=cctv)
+@main.route('/video_feed/<int:camera_index>')
+def video_feed(camera_index):
+    def generate_frames():
+        model = load_yolov8_model()
+        cap = cv2.VideoCapture(camera_index)
+        if not cap.isOpened():
+            raise RuntimeError("웹캠을 열 수 없습니다.")
+
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            # YOLOv8로 탐지 및 박싱
+            results = model.predict(source=frame, save=False, verbose=False)
+            detections = results[0].boxes.data.cpu().numpy()
+
+            for detection in detections:
+                x1, y1, x2, y2, conf, cls = detection
+                if int(cls) == 0 and conf >= 0.5:
+                    cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
+                    label = f"Person: {conf:.2f}"
+                    cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
+            # 프레임을 JPEG로 인코딩하여 스트리밍
+            _, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+        cap.release()
+
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @main.route('/login')
 def login():

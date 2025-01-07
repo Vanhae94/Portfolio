@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from logging.handlers import RotatingFileHandler
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from ultralytics import YOLO
 
 # .env 파일 로드
 load_dotenv()
@@ -21,6 +22,9 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
+    
+    # yolo모델
+    app.yolo_model = YOLO('yolov8n.pt') 
     
     # 설정 로드
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
