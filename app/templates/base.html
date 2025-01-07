@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CCTV</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}"
+    />
   </head>
   <body>
-  
     <!-- 상단바 -->
     <header>
       <div class="logo"><a href="/">CCTV</a></div>
@@ -15,14 +17,17 @@
         <div class="header-actions">
           <div class="header_buttons">
             {% if session.get('logged_in') %}
-              <form action="{{ url_for('main.logout') }}" method="get" style="display: inline;">
-                <button type="submit" class="logout-button">로그아웃</button>
-              </form>
+            <form
+              action="{{ url_for('main.logout') }}"
+              method="get"
+              style="display: inline"
+            >
+              <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+            <form action="/" method="get" style="display: inline">
+              <button type="submit">실시간 모니터링</button>
+            </form>
             {% endif %}
-            <button onclick="alert('상단바 1 클릭')">객체 탐지</button>
-            <button onclick="alert('상단바 2 클릭')">밀집도</button>
-            <button onclick="alert('상단바 3 클릭')">이상 행동 감지</button>
-
           </div>
         </div>
       </div>
@@ -30,8 +35,8 @@
 
     <!-- 사이드바 -->
     <nav>
+      {% if session.get('logged_in') %}
       <ul>
-        <li><a href="/">실시간 모니터링</a></li>
         <li><a href="/warning">밀집도 경고 기록</a></li>
         <li><a href="/abnormal-behavior">이상 행동 감지</a></li>
         {% if session.get('user_role') == 'admin' %}
@@ -39,12 +44,10 @@
         <li><a href="/user-management">보안/로그인</a></li>
         {% endif %}
       </ul>
+      {% endif %}
     </nav>
 
     <!-- 본문 영역 -->
-    <main class="main-content">
-      {% block content %}
-      {% endblock %}
-    </main>
+    <main class="main-content">{% block content %} {% endblock %}</main>
   </body>
 </html>
