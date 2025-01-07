@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cctv_style.css') }}">
+<div>
+    <h1>CCTV 등록</h1>
+    <hr>
+    <div class="cctv-register">
+        <form method="POST" action="{{ url_for('main.cctv_register') }}">
+          <table>
+            <tr>
+              <td><label for="cctv_id">CCTV ID:</label></td>
+              <td>
+                <input type="text" id="cctv_id" name="cctv_id" value="{{ next_cctv_id }}" required>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="location">위치:</label></td>
+              <td><input type="text" id="location" name="location" required></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align: center;">
+                <button type="submit">등록</button>
+              </td>
+            </tr>
+          </table>
+        </form>
+    </div>
+</div>
+<div class="button-container">
+    <a href="{{ url_for('main.cctv_list') }}">
+      <button>목록으로 돌아가기</button>
+    </a>
+</div>
+{% endblock %}
