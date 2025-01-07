@@ -1,20 +1,12 @@
-async function startAllWebcams(cctvs) {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+  function showCCTV(cctvId) {
+      const webcamFeeds = document.querySelectorAll('.webcam-feed');
+      webcamFeeds.forEach(feed => feed.style.display = 'none');
+      const selectedFeed = document.getElementById(`webcam-${cctvId}`);
+      if (selectedFeed) selectedFeed.style.display = 'block';
+  }
 
-    cctvs.forEach((cctv, index) => {
-        const videoElement = document.getElementById(`video-${cctv.cctv_id}`);
-        if (videoDevices[index]) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { deviceId: videoDevices[index].deviceId },
-                });
-                videoElement.srcObject = stream;
-            } catch (error) {
-                console.error(`웹캠(${cctv.cctv_id}) 접근 오류:`, error);
-            }
-        } else {
-            console.error(`CCTV ID(${cctv.cctv_id})에 해당하는 웹캠이 없습니다.`);
-        }
-    });
-}
+  // 페이지 로드 시 첫 번째 CCTV 화면 표시
+  window.onload = () => {
+      const cctvsData = {{ cctvs|tojson }};
+      showCCTV(cctvsData[0].cctv_id);
+  };
