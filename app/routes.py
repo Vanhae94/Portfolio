@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response, current_app
 from app import db, bcrypt
 from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog
 from .utils import load_yolov8_model
 import cv2
+import logging
 
 main = Blueprint('main', __name__)
 
@@ -14,9 +15,25 @@ def require_login():
 
 @main.route('/')
 def index():
-    cctvs = CCTV.query.all()  # CCTV 객체 리스트
-    cctv_list = [cctv.to_dict() for cctv in cctvs]  # 딕셔너리 리스트로 변환
-    return render_template('cctv.html', cctvs=cctv_list)  # index.html에 데이터 전달
+    try:
+        # 디버그 및 정보 로그
+        current_app.logger.debug('Index route accessed')
+        current_app.logger.info('Fetching CCTV data')
+
+        # 데이터베이스에서 CCTV 데이터를 가져오기
+        cctvs = CCTV.query.all()
+        cctv_list = [cctv.to_dict() for cctv in cctvs] 
+
+        current_app.logger.info(f'{len(cctv_list)} CCTV entries fetched')
+
+        # 템플릿 렌더링
+        return render_template('cctv.html', cctvs=cctv_list)
+
+    except Exception as e:
+        # 오류 발생 시 로그 기록
+        current_app.logger.error('An error occurred while fetching CCTV data', exc_info=True)
+        current_app.logger.critical(f'Critical error: {e}', exc_info=True)
+        return f"An error occurred: {str(e)}", 500
 
 @main.route('/video_feed/<int:camera_index>')
 def video_feed(camera_index):
@@ -205,7 +222,6 @@ def detection_logs():
 
 @main.route('/add-detection-log', methods=['POST'])
 def add_detection_log():
-    # 로그 추가를 처리합니다.
     cctv_id = request.form.get('cctv_id')
     image_url = request.form.get('image_url')
 
@@ -217,7 +233,23 @@ def add_detection_log():
     except Exception as e:
         db.session.rollback()
         return str(e), 500
-    
+
+@main.route('/abnormal-behavior')
+def abnormal_behavior():
+    """
+    이상행동 감지 데이터를 조회하고 템플릿으로 렌더링합니다.
+    """
+    # 데이터베이스에서 이상행동 감지 데이터 조회
+    logs = AbnormalBehaviorLog.query.join(CCTV).add_columns(
+        AbnormalBehaviorLog.id,
+        AbnormalBehaviorLog.detection_time,
+        CCTV.location,
+        AbnormalBehaviorLog.image_url,
+        AbnormalBehaviorLog.fall_status
+    ).all()
+
+    # 템플릿 렌더링
+    return render_template('abnormal_behavior.html', logs=logs)    
 
 @main.route('/warning')
 def density_stats():
@@ -232,16 +264,3 @@ def density_stats():
         DetectionLog.image_url
     ).all()
     return render_template('warning.html', logs=logs)
-
-@main.route('/abnormal-behavior')
-def abnormal_behavior():
-    # 이상행동 감지 데이터 조회
-    logs = AbnormalBehaviorLog.query.join(CCTV).add_columns(
-        AbnormalBehaviorLog.id,
-        AbnormalBehaviorLog.detection_time,
-        CCTV.location,
-        AbnormalBehaviorLog.image_url,
-        AbnormalBehaviorLog.fall_status
-    ).all()
-    return render_template('abnormal_behavior.html', logs=logs)
-
