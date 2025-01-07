@@ -932,3 +932,5 @@ Traceback (most recent call last):
   File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
     raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
 TypeError: Object of type CCTV is not JSON serializable
+[2025-01-07 17:05:39,339] ERROR in routes: Error fetching CCTV data: 'cctv' is undefined
+[2025-01-07 17:05:43,495] ERROR in routes: Error fetching CCTV data: 'cctv' is undefined
