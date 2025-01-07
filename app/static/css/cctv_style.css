@@ -1,0 +1,77 @@
+/* 테이블 기본 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+/* 헤더 스타일 */
+table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+/* 행 강조 */
+table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9; /* 홀수 행 색상 */
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #ffffff; /* 짝수 행 색상 */
+}
+
+/* 마우스 hover 효과 */
+table tbody tr:hover {
+  background-color: #f1f1f1; /* hover 시 강조 색상 */
+}
+
+/* 버튼 스타일 */
+.button-container {
+  text-align: right; /* 버튼 우측 정렬 */
+  margin-top: 20px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.button-container button:hover {
+  background-color: #555;
+}
+
+/* 우측 하단 버튼 위치 */
+.button-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+form select {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+form select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}

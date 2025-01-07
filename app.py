@@ -1,10 +1,12 @@
-from flask import Flask, render_template
+from app import create_app, db
 
-app = Flask(__name__)
+# 애플리케이션 생성
+app = create_app()
 
-@app.route('/')
-def home():
-    return render_template('base.html')
+# 데이터베이스 생성 및 초기화
+with app.app_context():
+    db.create_all()
 
-if __name__ == '__main__':
+# 서버 실행
+if __name__ == "__main__":
     app.run(debug=True)
