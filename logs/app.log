@@ -66,3 +66,869 @@
 [2025-01-07 16:27:55,794] INFO in routes: 4 CCTV entries fetched
 [2025-01-07 16:31:14,948] INFO in routes: Fetching CCTV data
 [2025-01-07 16:31:14,953] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:43:30,793] INFO in routes: Fetching CCTV data
+[2025-01-07 16:43:30,799] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:46:58,541] INFO in routes: Fetching CCTV data
+[2025-01-07 16:46:58,541] INFO in routes: 2 CCTV entries fetched
+[2025-01-07 16:47:32,792] INFO in routes: Fetching CCTV data
+[2025-01-07 16:47:32,796] INFO in routes: 3 CCTV entries fetched
+[2025-01-07 16:47:56,211] INFO in routes: Fetching CCTV data
+[2025-01-07 16:47:56,211] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:48:22,328] INFO in routes: Fetching CCTV data
+[2025-01-07 16:48:22,332] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:54:20,343] INFO in routes: Fetching CCTV data
+[2025-01-07 16:54:20,373] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:54:20,388] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:20,391] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:26,593] INFO in routes: Fetching CCTV data
+[2025-01-07 16:54:26,597] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:54:26,602] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:26,604] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:30,678] INFO in routes: Fetching CCTV data
+[2025-01-07 16:54:30,681] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:54:30,683] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:30,684] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:31,181] INFO in routes: Fetching CCTV data
+[2025-01-07 16:54:31,181] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:54:31,181] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:31,181] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:31,348] INFO in routes: Fetching CCTV data
+[2025-01-07 16:54:31,350] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:54:31,351] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:54:31,351] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctv_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:55:31,277] INFO in routes: Fetching CCTV data
+[2025-01-07 16:55:31,318] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:55:31,332] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:55:31,336] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:55:41,830] INFO in routes: Fetching CCTV data
+[2025-01-07 16:55:41,837] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:55:41,839] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:55:41,841] CRITICAL in routes: Critical error: 'cctv' is undefined
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 35, in block 'content'
+    <button onclick="captureCCTV('{{ cctv.cctv_id }}')">Ä¸ÃÄ</button>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'cctv' is undefined
+[2025-01-07 16:56:06,594] INFO in routes: Fetching CCTV data
+[2025-01-07 16:56:06,632] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:56:06,646] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctv=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 39, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+[2025-01-07 16:56:06,654] CRITICAL in routes: Critical error: Object of type Undefined is not JSON serializable
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctv=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 39, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+[2025-01-07 16:56:59,039] INFO in routes: Fetching CCTV data
+[2025-01-07 16:56:59,047] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:56:59,056] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctv=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+[2025-01-07 16:56:59,060] CRITICAL in routes: Critical error: Object of type Undefined is not JSON serializable
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctv=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+[2025-01-07 16:57:00,795] INFO in routes: Fetching CCTV data
+[2025-01-07 16:57:00,810] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:57:00,812] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctv=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+[2025-01-07 16:57:00,815] CRITICAL in routes: Critical error: Object of type Undefined is not JSON serializable
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctv=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type Undefined is not JSON serializable
+[2025-01-07 16:57:23,285] INFO in routes: Fetching CCTV data
+[2025-01-07 16:57:23,317] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:57:23,336] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type CCTV is not JSON serializable
+[2025-01-07 16:57:23,349] CRITICAL in routes: Critical error: Object of type CCTV is not JSON serializable
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type CCTV is not JSON serializable
+[2025-01-07 16:58:00,899] INFO in routes: Fetching CCTV data
+[2025-01-07 16:58:00,935] INFO in routes: 4 CCTV entries fetched
+[2025-01-07 16:58:00,949] ERROR in routes: An error occurred while fetching CCTV data
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type CCTV is not JSON serializable
+[2025-01-07 16:58:00,957] CRITICAL in routes: Critical error: Object of type CCTV is not JSON serializable
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 32, in index
+    return render_template('cctv.html', cctvs=cctvs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 1, in top-level template code
+    {% extends "base.html" %} {% block content %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\base.html", line 51, in top-level template code
+    <main class="main-content">{% block content %} {% endblock %}</main>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI3\cctv_2\app\templates\cctv.html", line 42, in block 'content'
+    const cctvsData = {{ cctvs|tojson }};
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\filters.py", line 1714, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\jinja2\utils.py", line 658, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask\json\provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type CCTV is not JSON serializable

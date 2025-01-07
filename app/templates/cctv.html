@@ -22,18 +22,25 @@
       <img
         src="{{ url_for('main.video_feed', camera_index=loop.index0) }}"
         id="stream-{{ cctv.cctv_id }}"
+        alt="CCTV Stream"
       />
+      <button onclick="captureCCTV('{{ cctv.cctv_id }}')" class="captureCCTV">
+        캡쳐
+      </button>
     </div>
     {% endfor %}
   </div>
 </div>
+
 <!-- 버튼 컨테이너 -->
 <div class="button-container">
   {% for cctv in cctvs %}
   <button onclick="showCCTV('{{ cctv.cctv_id }}')">{{ cctv.location }}</button>
   {% endfor %}
 </div>
+
 <script>
+  // JavaScript로 cctvs 데이터 전달
   const cctvsData = {{ cctvs|tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/cctv.js') }}"></script>
