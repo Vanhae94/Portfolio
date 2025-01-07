@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cctv_style.css') }}">
+<div>
+    <h1>밀집도 통계</h1>
+    <hr>
+    <table class="stats-table">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>탐지 시간</th>
+                <th>탐지 장소</th>
+                <th>밀집 정도</th>
+                <th>과밀 수준</th>
+                <th>감지된 객체 수</th>
+                <th>이미지</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.detection_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ log.location }}</td>
+                <td>{{ log.density_level }}</td>
+                <td>{{ log.overcrowding_level }}</td>
+                <td>{{ log.object_count }}</td>
+                <td><a href="{{ log.image_url }}" target="_blank">이미지 보기</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

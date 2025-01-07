@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cctv_style.css') }}">
+<div>
+<h1>사용자 관리</h1>
+
+<hr>
+<table class="user-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>아이디</th>
+      <th>이름</th>
+      <th>이메일</th>
+      <th>전화번호</th>
+      <th>역할</th>
+      <th>수정</th>
+      <th>삭제</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.userid }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phone }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('main.user_management') }}" style="display: inline;">
+          <input type="hidden" name="user_id" value="{{ user.id }}">
+          <select name="role">
+            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>관리자</option>
+            <option value="user" {% if user.role == 'user' %}selected{% endif %}>유저</option>
+            <option value="pending" {% if user.role == 'pending' %}selected{% endif %}>대기</option>
+          </select>
+        <td><button type="submit">수정</button></td>
+      </form>
+      </td>
+      <td>
+        <form method="POST" action="{{ url_for('main.delete_user', user_id=user.id) }}" style="display: inline;">
+          <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

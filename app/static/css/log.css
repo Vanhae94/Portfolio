@@ -1,0 +1,76 @@
+/* 로그인 폼 컨테이너 */
+.signup-form {
+    width: 400px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* 헤더 스타일 */
+.signup-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 입력 필드 그룹 */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* 버튼 컨테이너 */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-actions button:hover {
+    background-color: #555;
+}
+
+
+
+/* 에러 메시지 스타일 */
+.alert-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
