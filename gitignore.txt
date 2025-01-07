@@ -1,5 +1,0 @@
-deap_models/
-yolo_v8/
-web_study/
-__pycache__/
-.gitignore

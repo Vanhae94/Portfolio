@@ -32,6 +32,7 @@ class CCTV(db.Model):
         }
 
 
+
 class DetectionLog(db.Model):
     __tablename__ = 'detection_logs'
     id = db.Column(db.Integer, primary_key=True)

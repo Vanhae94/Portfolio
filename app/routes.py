@@ -1,8 +1,11 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response, current_app, jsonify
 from app import db, bcrypt
 from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog
 from .utils import load_yolov8_model
+from datetime import datetime
 import cv2
+import os
+import logging
 
 main = Blueprint('main', __name__)
 
@@ -14,9 +17,24 @@ def require_login():
 
 @main.route('/')
 def index():
-    cctvs = CCTV.query.all()  # CCTV 객체 리스트
-    cctv_list = [cctv.to_dict() for cctv in cctvs]  # 딕셔너리 리스트로 변환
-    return render_template('cctv.html', cctvs=cctv_list)  # index.html에 데이터 전달
+    try:
+        # 데이터베이스에서 CCTV 데이터 가져오기
+        cctvs = CCTV.query.all()
+        cctvs_data = [cctv.to_dict() for cctv in cctvs]  # 직렬화 가능한 형식으로 변환
+
+        # 템플릿 렌더링
+        return render_template('cctv.html', cctvs=cctvs_data)
+
+    except Exception as e:
+        current_app.logger.error(f"Error fetching CCTV data: {e}")
+        return f"An error occurred: {e}", 500
+
+
+    except Exception as e:
+        # 오류 발생 시 로그 기록
+        current_app.logger.error('An error occurred while fetching CCTV data', exc_info=True)
+        current_app.logger.critical(f'Critical error: {e}', exc_info=True)
+        return f"An error occurred: {str(e)}", 500
 
 @main.route('/video_feed/<int:camera_index>')
 def video_feed(camera_index):
@@ -155,6 +173,22 @@ def cctv_register():
 
     return render_template('cctv_register.html', next_cctv_id=next_cctv_id)
 
+#cctv 삭제 기능
+@main.route('/delete-cctv/<int:cctv_id>', methods=['POST'])
+def delete_cctv(cctv_id):
+    cctv = CCTV.query.get(cctv_id)
+    if cctv:
+        try:
+            db.session.delete(cctv)
+            db.session.commit()
+            flash(f"{cctv.location} (ID: {cctv.cctv_id})이 삭제되었습니다.")
+        except Exception as e:
+            db.session.rollback()
+            flash("CCTV 삭제 중 오류가 발생했습니다.")
+    else:
+        flash("존재하지 않는 CCTV입니다.")
+    return redirect(url_for('main.cctv_list'))
+
 
 # 사용자 관리 페이지
 @main.route('/user-management', methods=['GET', 'POST'])
@@ -205,7 +239,6 @@ def detection_logs():
 
 @main.route('/add-detection-log', methods=['POST'])
 def add_detection_log():
-    # 로그 추가를 처리합니다.
     cctv_id = request.form.get('cctv_id')
     image_url = request.form.get('image_url')
 
@@ -217,7 +250,23 @@ def add_detection_log():
     except Exception as e:
         db.session.rollback()
         return str(e), 500
-    
+
+@main.route('/abnormal-behavior')
+def abnormal_behavior():
+    """
+    이상행동 감지 데이터를 조회하고 템플릿으로 렌더링합니다.
+    """
+    # 데이터베이스에서 이상행동 감지 데이터 조회
+    logs = AbnormalBehaviorLog.query.join(CCTV).add_columns(
+        AbnormalBehaviorLog.id,
+        AbnormalBehaviorLog.detection_time,
+        CCTV.location,
+        AbnormalBehaviorLog.image_url,
+        AbnormalBehaviorLog.fall_status
+    ).all()
+
+    # 템플릿 렌더링
+    return render_template('abnormal_behavior.html', logs=logs)    
 
 @main.route('/warning')
 def density_stats():
@@ -233,15 +282,46 @@ def density_stats():
     ).all()
     return render_template('warning.html', logs=logs)
 
-@main.route('/abnormal-behavior')
-def abnormal_behavior():
-    # 이상행동 감지 데이터 조회
-    logs = AbnormalBehaviorLog.query.join(CCTV).add_columns(
-        AbnormalBehaviorLog.id,
-        AbnormalBehaviorLog.detection_time,
-        CCTV.location,
-        AbnormalBehaviorLog.image_url,
-        AbnormalBehaviorLog.fall_status
-    ).all()
-    return render_template('abnormal_behavior.html', logs=logs)
+@main.route('/capture/<cctv_id>', methods=['POST'])
+def capture_cctv(cctv_id):
+    try:
+        # cctv_id에서 숫자를 추출하고 -1 계산
+        try:
+            webcam_index = int(''.join(filter(str.isdigit, cctv_id))) - 1
+        except ValueError:
+            raise ValueError(f"유효하지 않은 CCTV ID: {cctv_id}")
 
+        # 데이터베이스에서 CCTV 위치 조회
+        cctv = CCTV.query.filter_by(cctv_id=cctv_id).first()
+        if not cctv:
+            raise ValueError(f"CCTV ID {cctv_id}에 해당하는 데이터가 없습니다.")
+        
+        location = cctv.location.replace(" ", "_")  # 공백 제거 및 파일명 안전화
+
+        # 해당 웹캠 인덱스로 비디오 스트림 열기
+        cap = cv2.VideoCapture(webcam_index)
+        if not cap.isOpened():
+            raise RuntimeError(f"CCTV {cctv_id}에 접근할 수 없습니다. (웹캠 인덱스: {webcam_index})")
+
+        # 프레임 읽기
+        ret, frame = cap.read()
+        if not ret:
+            raise RuntimeError(f"CCTV {cctv_id}의 프레임을 읽을 수 없습니다.")
+        
+        # 캡쳐 파일 저장 경로 생성
+        timestamp = datetime.now().strftime('%Y_%m_%d_%H_%M')
+        file_name = f"{location}_{timestamp}.jpg"
+        file_path = os.path.join(current_app.root_path, 'static/images/cctv_capture', file_name)
+        
+        # 디렉토리 생성 (없을 경우)
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        # 이미지 저장
+        cv2.imwrite(file_path, frame)
+        cap.release()
+
+        # 성공 응답
+        return jsonify({"success": True, "file_path": file_name})
+    except Exception as e:
+        current_app.logger.error(f"CCTV 캡쳐 중 오류 발생: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
