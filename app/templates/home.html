@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/home.css') }}"
+/>
+
+<div>
+  <div id="grid-container">
+    <!-- JavaScript에서 동적으로 웹캠 표시 -->
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

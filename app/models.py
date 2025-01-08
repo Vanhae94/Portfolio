@@ -31,8 +31,6 @@ class CCTV(db.Model):
             "last_access": self.last_access.isoformat() if self.last_access else None,
         }
 
-
-
 class DetectionLog(db.Model):
     __tablename__ = 'detection_logs'
     id = db.Column(db.Integer, primary_key=True)
@@ -56,3 +54,4 @@ class AbnormalBehaviorLog(db.Model):
 
     # 관계 설정
     cctv = db.relationship('CCTV', backref=db.backref('abnormal_behavior_logs', lazy=True))
+
