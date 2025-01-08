@@ -1,0 +1,57 @@
+/* CCTV 웹캠 스타일 */
+.webcam-feed {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 기본 비디오 크기 설정 */
+.webcam-feed video {
+  width: 100%;
+  max-width: 8000px;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+/* 버튼 컨테이너 스타일 */
+.button-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.button-container button:hover {
+  background-color: #555;
+}
+
+.captureCCTV {
+  position: fixed;
+  bottom: 20px;
+  left: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.captureCCTV :hover {
+  background-color: #555;
+}

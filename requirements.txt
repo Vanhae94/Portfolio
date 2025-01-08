@@ -1,0 +1,6 @@
+Flask
+mysqlclient
+python-dotenv
+flask-sqlalchemy
+pymysql
+Flask-Bcrypt

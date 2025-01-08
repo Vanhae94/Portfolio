@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>CCTV 목록</h1>
+
+<!-- CCTV 등록 페이지로 이동 버튼 -->
+<a href="{{ url_for('main.cctv_register') }}">
+  <button>새 CCTV 등록</button>
+</a>
+
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th>CCTV ID</th>
+      <th>위치</th>
+      <th>등록 날짜</th>
+      <th>작동 상태</th>
+      <th>접근 권한</th>
+      <th>최근 접근 기록</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cctv in cctvs %}
+    <tr>
+      <td>{{ cctv.cctv_id }}</td>
+      <td>{{ cctv.location }}</td>
+      <td>{{ cctv.registration_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+      <td>{{ cctv.status }}</td>
+      <td>{{ cctv.access_permission }}</td>
+      <td>
+        {% if cctv.last_access %}
+        {{ cctv.last_access.strftime('%Y-%m-%d %H:%M:%S') }}
+        {% else %}
+        -
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

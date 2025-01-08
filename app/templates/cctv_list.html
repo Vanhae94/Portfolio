@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block content %}
+<script src="{{ url_for('static', filename='js/cctv_list.js') }}"></script>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/cctv_style.css') }}"
+/>
+<div>
+  <h1>CCTV 목록</h1>
+  <hr />
+  <table>
+    <thead>
+      <tr>
+        <th>CCTV ID</th>
+        <th>위치</th>
+        <th>등록 날짜</th>
+        <th>작동 상태</th>
+        <th>최근 접근 기록</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cctv in cctvs %}
+      <tr>
+        <td>{{ cctv.cctv_id }}</td>
+        <td>{{ cctv.location }}</td>
+        <td>{{ cctv.registration_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td id="status-{{ cctv.cctv_id }}" data-cctv-id="{{ cctv.cctv_id }}">
+          확인 중...
+        </td>
+        <td>
+          {% if cctv.last_access %} {{ cctv.last_access.strftime('%Y-%m-%d
+          %H:%M:%S') }} {% else %} - {% endif %}
+        </td>
+        <td>
+          <form
+            method="POST"
+            action="{{ url_for('main.delete_cctv', cctv_id=cctv.id) }}"
+          >
+            <button
+              type="submit"
+              onclick="return confirm('이 CCTV를 삭제하시겠습니까?');"
+            >
+              삭제
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="button-container">
+  <a href="{{ url_for('main.cctv_register') }}">
+    <button>CCTV 등록</button>
+  </a>
+</div>
+{% endblock %}
