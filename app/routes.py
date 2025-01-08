@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response, current_app, jsonify
 from app import db, bcrypt
 from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog
-from .utils import load_yolov8_model
+from .utils import generate_webcam_data
 from datetime import datetime
 import cv2
 import os
-import logging
+import re
 
 main = Blueprint('main', __name__)
 
@@ -18,57 +18,17 @@ def require_login():
 @main.route('/')
 def index():
     try:
-        # 데이터베이스에서 CCTV 데이터 가져오기
+        # CCTV 데이터를 데이터베이스에서 가져오기
         cctvs = CCTV.query.all()
-        cctvs_data = [cctv.to_dict() for cctv in cctvs]  # 직렬화 가능한 형식으로 변환
-
-        # 템플릿 렌더링
-        return render_template('cctv.html', cctvs=cctvs_data)
-
+        cctv_ids = [cctv.cctv_id for cctv in cctvs]
+        
+        # home.html 렌더링 시 CCTV ID 데이터 전달
+        return render_template('home.html', cctv_ids=cctv_ids)
+    
     except Exception as e:
-        current_app.logger.error(f"Error fetching CCTV data: {e}")
-        return f"An error occurred: {e}", 500
-
-
-    except Exception as e:
-        # 오류 발생 시 로그 기록
-        current_app.logger.error('An error occurred while fetching CCTV data', exc_info=True)
-        current_app.logger.critical(f'Critical error: {e}', exc_info=True)
-        return f"An error occurred: {str(e)}", 500
-
-@main.route('/video_feed/<int:camera_index>')
-def video_feed(camera_index):
-    def generate_frames():
-        model = load_yolov8_model()
-        cap = cv2.VideoCapture(camera_index)
-        if not cap.isOpened():
-            raise RuntimeError("웹캠을 열 수 없습니다.")
-
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            # YOLOv8로 탐지 및 박싱
-            results = model.predict(source=frame, save=False, verbose=False)
-            detections = results[0].boxes.data.cpu().numpy()
-
-            for detection in detections:
-                x1, y1, x2, y2, conf, cls = detection
-                if int(cls) == 0 and conf >= 0.5:
-                    cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-                    label = f"Person: {conf:.2f}"
-                    cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-
-            # 프레임을 JPEG로 인코딩하여 스트리밍
-            _, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-        cap.release()
-
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        # 오류 발생 시 로그 기록 및 사용자에게 메시지 표시
+        current_app.logger.error(f"Error fetching CCTV data: {e}", exc_info=True)
+        return f"An error occurred while fetching CCTV data: {e}", 500
 
 @main.route('/login')
 def login():
@@ -325,3 +285,28 @@ def capture_cctv(cctv_id):
     except Exception as e:
         current_app.logger.error(f"CCTV 캡쳐 중 오류 발생: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
+
+#마지막 접근 라우트
+@main.route('/update-last-access/<cctv_id>', methods=['POST'])
+def update_last_access(cctv_id):
+    # CCTV 모델에서 해당 ID 검색
+    cctv = CCTV.query.filter_by(cctv_id=cctv_id).first()
+    if not cctv:
+        return jsonify({"error": f"CCTV ID '{cctv_id}' not found"}), 404
+
+    # 현재 시간으로 last_access 업데이트
+    cctv.last_access = datetime.utcnow()
+    try:
+        db.session.commit()
+        return jsonify({"success": True, "message": "Last access updated", "last_access": cctv.last_access.isoformat()}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+
+@main.route('/focus-webcam/<cctv_id>')
+def focus_webcam(cctv_id):
+    cctv = CCTV.query.filter_by(cctv_id=cctv_id).first()
+    if not cctv:
+        flash(f"CCTV ID '{cctv_id}'에 해당하는 데이터가 없습니다.")
+        return redirect(url_for('main.cctv_list'))  # CCTV 목록 페이지로 리다이렉트
+    return render_template('webcam_focus.html', cctv=cctv)
