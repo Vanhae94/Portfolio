@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/cctv_style.css') }}"
+/>
+<div>
+  <h1>밀집도 설정 관리</h1>
+  <!-- 새로운 설정 추가 버튼 -->
+  <div style="text-align: right; margin-bottom: 20px"></div>
+  <hr />
+  <h2>기존 설정</h2>
+  <table class="settings-table">
+    <thead>
+      <tr>
+        <th>단계</th>
+        <th>최대 밀집도</th>
+        <th>설명</th>
+        <th>수정</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for setting in settings %}
+      <tr>
+        <td>{{ setting.level }}</td>
+        <td>{{ setting.max_density }}</td>
+        <td>{{ setting.description }}</td>
+        <td>
+          <!-- 수정 버튼 -->
+          <a href="{{ url_for('main.edit_setting', setting_id=setting.id) }}">
+            <button>수정</button>
+          </a>
+        </td>
+        <td>
+          <!-- 삭제 버튼 -->
+          <form
+            method="POST"
+            action="{{ url_for('main.delete_setting', setting_id=setting.id) }}"
+            onsubmit="return confirm('정말 삭제하시겠습니까?')"
+          >
+            <button type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('main.add_setting') }}">
+    <button>새 설정 추가</button>
+  </a>
+</div>
+{% endblock %}

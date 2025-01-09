@@ -55,26 +55,8 @@ function focusWebcam(index) {
   const cctvId = selectedItem.getAttribute("data-cctv-id");
 
   if (cctvId) {
-    // `last_access` 업데이트를 위한 API 호출
-    fetch(`/update-last-access/${cctvId}`, { method: "POST" })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          console.log(`Last access updated for ${cctvId}:`, data.last_access);
-          // 업데이트 성공 시 해당 CCTV 화면으로 이동
-          window.location.href = `/focus-webcam/${cctvId}`;
-        } else {
-          console.error(
-            `Error updating last_access for ${cctvId}:`,
-            data.message
-          );
-          alert("CCTV 접근 기록 업데이트 중 문제가 발생했습니다.");
-        }
-      })
-      .catch((error) => {
-        console.error(`Error during last_access update for ${cctvId}:`, error);
-        alert("CCTV 접근 중 문제가 발생했습니다.");
-      });
+    // `webcam_focus.html`로 이동
+    window.location.href = `/focus-webcam/${cctvId}`;
   } else {
     console.error(`CCTV ID not found for index: ${index}`);
     alert("CCTV ID를 찾을 수 없습니다.");

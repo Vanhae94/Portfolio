@@ -55,3 +55,12 @@ class AbnormalBehaviorLog(db.Model):
     # 관계 설정
     cctv = db.relationship('CCTV', backref=db.backref('abnormal_behavior_logs', lazy=True))
 
+class Setting(db.Model):
+    __tablename__ = 'settings'
+    id = db.Column(db.Integer, primary_key=True)
+    level = db.Column(db.Integer, nullable=False, unique=True)  # 단계 (1~5)
+    max_density = db.Column(db.Float, nullable=False)  # 최대 밀집도 기준
+    description = db.Column(db.String(255), nullable=True)  # 설명
+
+    def __repr__(self):
+        return f'<Setting Level {self.level}>'
