@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response, current_app, jsonify
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response, current_app, jsonify,  stream_with_context
 from app import db, bcrypt
-from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog
-from .utils import generate_webcam_data
+from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog, Setting
+from .utils import generate_webcam_data, load_yolov8_model_1, load_yolov8_model_2, load_yolov8_model_3, get_latest_frame, calculate_density, annotate_frame_with_density, save_frame_capture
 from datetime import datetime
 import cv2
 import os
-import re
+import base64
 
 main = Blueprint('main', __name__)
 
@@ -242,49 +242,33 @@ def density_stats():
     ).all()
     return render_template('warning.html', logs=logs)
 
-@main.route('/capture/<cctv_id>', methods=['POST'])
-def capture_cctv(cctv_id):
+@main.route('/save-capture', methods=['POST'])
+def save_capture():
+    data = request.json
+    cctv_id = data.get("cctv_id")
+    image_data = data.get("image_data")
+
+    if not cctv_id or not image_data:
+        return jsonify({"error": "Missing data"}), 400
+
+    # 이미지 데이터 디코딩
+    header, encoded = image_data.split(",", 1)
+    image_binary = base64.b64decode(encoded)
+
+    # 파일 저장 경로 및 이름 설정
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = f"{cctv_id}_{timestamp}.jpg"
+    save_dir = os.path.join("app", "static", "images", "cctv_capture")
+    os.makedirs(save_dir, exist_ok=True)
+    filepath = os.path.join(save_dir, filename)
+
+    # 파일 저장
     try:
-        # cctv_id에서 숫자를 추출하고 -1 계산
-        try:
-            webcam_index = int(''.join(filter(str.isdigit, cctv_id))) - 1
-        except ValueError:
-            raise ValueError(f"유효하지 않은 CCTV ID: {cctv_id}")
-
-        # 데이터베이스에서 CCTV 위치 조회
-        cctv = CCTV.query.filter_by(cctv_id=cctv_id).first()
-        if not cctv:
-            raise ValueError(f"CCTV ID {cctv_id}에 해당하는 데이터가 없습니다.")
-        
-        location = cctv.location.replace(" ", "_")  # 공백 제거 및 파일명 안전화
-
-        # 해당 웹캠 인덱스로 비디오 스트림 열기
-        cap = cv2.VideoCapture(webcam_index)
-        if not cap.isOpened():
-            raise RuntimeError(f"CCTV {cctv_id}에 접근할 수 없습니다. (웹캠 인덱스: {webcam_index})")
-
-        # 프레임 읽기
-        ret, frame = cap.read()
-        if not ret:
-            raise RuntimeError(f"CCTV {cctv_id}의 프레임을 읽을 수 없습니다.")
-        
-        # 캡쳐 파일 저장 경로 생성
-        timestamp = datetime.now().strftime('%Y_%m_%d_%H_%M')
-        file_name = f"{location}_{timestamp}.jpg"
-        file_path = os.path.join(current_app.root_path, 'static/images/cctv_capture', file_name)
-        
-        # 디렉토리 생성 (없을 경우)
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-
-        # 이미지 저장
-        cv2.imwrite(file_path, frame)
-        cap.release()
-
-        # 성공 응답
-        return jsonify({"success": True, "file_path": file_name})
+        with open(filepath, "wb") as f:
+            f.write(image_binary)
+        return jsonify({"message": "Image saved successfully", "filename": filename}), 200
     except Exception as e:
-        current_app.logger.error(f"CCTV 캡쳐 중 오류 발생: {e}")
-        return jsonify({"success": False, "error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 #마지막 접근 라우트
 @main.route('/update-last-access/<cctv_id>', methods=['POST'])
@@ -304,9 +288,201 @@ def update_last_access(cctv_id):
         return jsonify({"success": False, "message": str(e)}), 500
 
 @main.route('/focus-webcam/<cctv_id>')
-def focus_webcam(cctv_id):
+def webcam_focus(cctv_id):
+    # CCTV ID로 CCTV 데이터를 검색
     cctv = CCTV.query.filter_by(cctv_id=cctv_id).first()
     if not cctv:
+        # CCTV ID가 없을 경우 에러 메시지와 함께 리다이렉트
         flash(f"CCTV ID '{cctv_id}'에 해당하는 데이터가 없습니다.")
         return redirect(url_for('main.cctv_list'))  # CCTV 목록 페이지로 리다이렉트
+
+    # 웹캠 포커스 템플릿 렌더링
     return render_template('webcam_focus.html', cctv=cctv)
+
+@main.route('/video-stream/<cctv_id>/<model_type>')
+def video_stream(cctv_id, model_type):
+    cctv = CCTV.query.filter_by(cctv_id=cctv_id).first_or_404()
+
+    # 선택된 YOLO 모델 로드
+    try:
+        if model_type == 'object':
+            model = load_yolov8_model_1()
+        elif model_type == 'density':
+            model = load_yolov8_model_2()
+        elif model_type == 'behavior':
+            model = load_yolov8_model_3()
+        else:
+            return jsonify({"error": "Invalid model type"}), 400
+    except Exception as e:
+        current_app.logger.error(f"Error loading YOLO model: {str(e)}")
+        return jsonify({"error": "Failed to load YOLO model"}), 500
+
+    # 장치 인덱스 계산
+    try:
+        device_index = int(cctv_id.replace('CCTV', '')) - 1
+    except ValueError:
+        current_app.logger.error(f"Invalid CCTV ID format: {cctv_id}")
+        return jsonify({"error": "Invalid CCTV ID format"}), 400
+
+    # 설정값 가져오기
+    settings = Setting.query.order_by(Setting.level).all()
+    thresholds = {setting.level: setting.max_density for setting in settings}
+
+    def generate_frames():
+        cap = cv2.VideoCapture(device_index)
+        if not cap.isOpened():
+            current_app.logger.error(f"Failed to open device {device_index}")
+            return
+
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                current_app.logger.error(f"Failed to capture frame from device {device_index}")
+                break
+
+            try:
+                # 밀집도 계산 (density 모델에서만 처리)
+                if model_type == 'density':
+                    density = calculate_density(frame, model)
+                    overcrowding_level = "Normal"
+                    object_count = int(density * frame.shape[0] * frame.shape[1])
+
+                    # 기준값과 비교하여 캡처 여부 결정
+                    for level, max_density in thresholds.items():
+                        if density > max_density:
+                            overcrowding_level = f"Level {level}"
+                            save_frame_capture(
+                                frame,
+                                cctv.id,
+                                density,
+                                overcrowding_level,
+                                object_count
+                            )
+                            current_app.logger.info(f"Captured frame for high density: {density}")
+                            break
+
+                    # 밀집도 시각화
+                    processed_frame = annotate_frame_with_density(frame, density)
+                else:
+                    # YOLO 모델을 이용해 프레임 처리
+                    processed_frame = generate_webcam_data(frame, model)
+
+                # 프레임을 JPEG로 인코딩
+                _, buffer = cv2.imencode('.jpg', processed_frame)
+                frame = buffer.tobytes()
+
+                # MJPEG 형식으로 프레임 반환
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            except Exception as e:
+                current_app.logger.error(f"Error processing frame: {str(e)}")
+                break
+
+        cap.release()
+
+    return Response(stream_with_context(generate_frames()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@main.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if request.method == 'POST':
+        level = request.form.get('level')
+        max_density = request.form.get('max_density')
+        description = request.form.get('description')
+
+        # 기존 레벨 수정/추가
+        setting = Setting.query.filter_by(level=level).first()
+        if not setting:
+            setting = Setting(level=level, max_density=max_density, description=description)
+            db.session.add(setting)
+        else:
+            setting.max_density = max_density
+            setting.description = description
+        
+        try:
+            db.session.commit()
+            flash("설정이 성공적으로 업데이트되었습니다.")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"설정 업데이트 중 오류가 발생했습니다: {e}")
+
+        return redirect(url_for('main.settings'))
+
+    settings = Setting.query.order_by(Setting.level).all()
+    return render_template('settings.html', settings=settings)
+
+@main.route('/add-setting', methods=['GET', 'POST'])
+def add_setting():
+    if request.method == 'POST':
+        level = request.form.get('level')
+        max_density = request.form.get('max_density')
+        description = request.form.get('description')
+
+        # 새 설정 추가
+        new_setting = Setting(level=level, max_density=max_density, description=description)
+        try:
+            db.session.add(new_setting)
+            db.session.commit()
+            flash("새 설정이 성공적으로 추가되었습니다.")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"설정 추가 중 오류가 발생했습니다: {e}")
+
+        return redirect(url_for('main.settings'))
+
+    return render_template('add_setting.html')
+
+@main.route('/edit-setting/<int:setting_id>', methods=['GET'])
+def edit_setting(setting_id):
+    setting = Setting.query.get_or_404(setting_id)
+    return render_template('edit_setting.html', setting=setting)
+
+@main.route('/update-setting/<int:setting_id>', methods=['POST'])
+def update_setting(setting_id):
+    setting = Setting.query.get_or_404(setting_id)
+    setting.max_density = request.form.get('max_density')
+    setting.description = request.form.get('description')
+
+    try:
+        db.session.commit()
+        flash(f"'{setting.level}' 단계 설정이 성공적으로 수정되었습니다.")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"설정 수정 중 오류가 발생했습니다: {e}")
+    
+    return redirect(url_for('main.settings'))
+
+@main.route('/delete-setting/<int:setting_id>', methods=['POST'])
+def delete_setting(setting_id):
+    setting = Setting.query.get_or_404(setting_id)
+    try:
+        db.session.delete(setting)
+        db.session.commit()
+        flash(f"'{setting.level}' 단계 설정이 성공적으로 삭제되었습니다.")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"설정 삭제 중 오류가 발생했습니다: {e}")
+    
+    return redirect(url_for('main.settings'))
+
+@main.route('/density-data/<cctv_id>', methods=['GET'])
+def get_density_data(cctv_id):
+    # 설정값 가져오기
+    settings = Setting.query.order_by(Setting.level).all()
+    thresholds = {setting.level: setting.max_density for setting in settings}
+
+    # 현재 밀집도 계산 (예시: 미리 저장된 값 또는 YOLO에서 호출)
+    frame = get_latest_frame(cctv_id)  # 실시간 프레임을 가져오는 사용자 정의 함수
+    density = calculate_density(frame, load_yolov8_model_2())
+
+    # 기준값과 비교하여 현재 단계 결정
+    overcrowding_level = "Overcrowded"
+    for level, max_density in thresholds.items():
+        if density <= max_density:
+            overcrowding_level = f"Level {level}"
+            break
+
+    return jsonify({
+        "density": density,
+        "threshold": thresholds,
+        "overcrowding_level": overcrowding_level
+    })

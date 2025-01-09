@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/cctv_style.css') }}"
+/>
+<div>
+  <h1>새 설정 추가</h1>
+  <form method="POST" action="{{ url_for('main.add_setting') }}">
+    <table>
+      <tr>
+        <td>단계:</td>
+        <td><input type="number" name="level" required /></td>
+      </tr>
+      <tr>
+        <td>최대 밀집도:</td>
+        <td><input type="text" name="max_density" required /></td>
+      </tr>
+      <tr>
+        <td>설명:</td>
+        <td><input type="text" name="description" /></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align: center">
+          <button type="submit">저장</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+{% endblock %}

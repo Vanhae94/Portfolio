@@ -5,37 +5,67 @@
 />
 <div class="focused-webcam-container">
   <h1>{{ cctv.location }} (CCTV ID: {{ cctv.cctv_id }})</h1>
-  <video autoplay playsinline id="focused-video"></video>
+  <img
+    id="focused-video"
+    src="/video-stream/{{ cctv.cctv_id }}/object"
+    alt="Live Stream"
+    class="focused-video"
+  />
   <div class="button-container">
-    <button>객체 탐지</button>
-    <button>밀집도</button>
-    <button>이상 행동</button>
+    <button onclick="switchStream('object')">객체 탐지</button>
+    <button onclick="switchStream('density')">밀집도</button>
+    <button onclick="switchStream('behavior')">이상 행동</button>
+    <button onclick="captureImage()">캡처</button>
   </div>
 </div>
-<script>
-  async function startSoloWebcam(cctvId) {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter(
-      (device) => device.kind === "videoinput"
-    );
-    const index = parseInt(cctvId.replace("CCTV", "")) - 1;
 
-    if (videoDevices[index]) {
-      const videoElement = document.getElementById("focused-video");
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: videoDevices[index].deviceId },
-        });
-        videoElement.srcObject = stream;
-      } catch (error) {
-        console.error(`웹캠(${cctvId}) 접근 오류:`, error);
-      }
+<script>
+  function switchStream(modelType) {
+    const videoElement = document.getElementById("focused-video");
+    videoElement.src = `/video-stream/{{ cctv.cctv_id }}/${modelType}`;
+  }
+
+  async function captureImage() {
+    const videoElement = document.getElementById("focused-video");
+    const canvas = document.createElement("canvas");
+    canvas.width = videoElement.width;
+    canvas.height = videoElement.height;
+
+    const context = canvas.getContext("2d");
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    // 캡처된 이미지를 데이터 URL로 변환
+    const imageData = canvas.toDataURL("image/jpeg");
+
+    // 서버에 이미지 저장 요청
+    const response = await fetch("/save-capture", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cctv_id: "{{ cctv.cctv_id }}",
+        image_data: imageData,
+      }),
+    });
+
+    if (response.ok) {
+      alert("이미지가 성공적으로 저장되었습니다.");
     } else {
-      console.error(`CCTV ID(${cctvId})에 해당하는 웹캠이 없습니다.`);
+      alert("이미지 저장 중 오류가 발생했습니다.");
+    }
+  }
+  async function monitorDensity() {
+    const response = await fetch(`/density-data/{{ cctv.cctv_id }}`);
+    const data = await response.json();
+
+    if (data.density > data.threshold) {
+      alert(`밀집도 초과: ${data.density}명`);
+      await captureImage(); // 자동 캡처 실행
     }
   }
 
-  // 페이지 로드 시 해당 CCTV 스트림 시작
-  window.onload = () => startSoloWebcam("{{ cctv.cctv_id }}");
+  // 페이지 로드 후 밀집도 모니터링 시작
+  setInterval(monitorDensity, 5000); // 5초마다 밀집도 확인
 </script>
 {% endblock %}

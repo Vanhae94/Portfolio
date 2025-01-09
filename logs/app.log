@@ -934,3 +934,53 @@ Traceback (most recent call last):
 TypeError: Object of type CCTV is not JSON serializable
 [2025-01-07 17:05:39,339] ERROR in routes: Error fetching CCTV data: 'cctv' is undefined
 [2025-01-07 17:05:43,495] ERROR in routes: Error fetching CCTV data: 'cctv' is undefined
+[2025-01-09 14:56:12,739] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 14:56:14,920] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 14:57:19,193] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 14:57:57,985] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 14:58:01,126] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 14:58:17,683] ERROR in routes: Failed to capture frame from device 1
+[2025-01-09 14:59:34,312] ERROR in routes: Failed to capture frame from device 1
+[2025-01-09 15:01:18,213] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 15:01:33,777] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 15:01:58,622] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 15:02:25,318] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 15:02:41,921] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 15:02:59,875] ERROR in routes: Failed to capture frame from device 1
+[2025-01-09 15:03:27,280] ERROR in routes: Failed to capture frame from device 2
+[2025-01-09 16:09:32,716] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:09:42,270] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:09:45,605] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:34:40,578] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:34:45,512] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:34:54,839] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:34:55,889] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:35:15,628] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:35:20,687] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:35:25,722] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:38:17,584] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:38:39,663] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:38:39,679] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:38:49,518] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:38:49,609] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:39:04,828] ERROR in routes: Failed to capture frame from device 2
+[2025-01-09 16:40:28,060] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:40:28,116] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:40:34,102] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:41:08,658] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:41:26,887] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:41:27,006] ERROR in routes: Failed to capture frame from device 1
+[2025-01-09 16:42:14,806] ERROR in routes: Failed to capture frame from device 1
+[2025-01-09 16:42:30,469] ERROR in routes: Failed to capture frame from device 2
+[2025-01-09 16:42:30,533] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:44:20,476] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:44:20,500] ERROR in routes: Failed to capture frame from device 2
+[2025-01-09 16:52:59,500] ERROR in routes: Failed to capture frame from device 2
+[2025-01-09 16:53:00,679] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:58:44,044] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:58:45,464] ERROR in routes: Error processing frame: 'list' object has no attribute 'xyxy'
+[2025-01-09 16:58:53,932] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:59:02,460] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:59:17,603] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 16:59:32,746] ERROR in routes: Failed to capture frame from device 0
+[2025-01-09 17:24:09,272] ERROR in routes: Error processing image: 'list' object has no attribute 'xyxy'
