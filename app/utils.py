@@ -17,7 +17,7 @@ def load_yolov8_model_1(model_path="yolo_models/yolov8n.pt"):
     return YOLO(model_path)
 
 # YOLOv8 모델 로드 / 밀집도
-def load_yolov8_model_2(model_path="yolo_models/head.pt"):
+def load_yolov8_model_2(model_path="yolo_models/bestyolo.pt"):
     return YOLO(model_path)
 
 # YOLOv8 모델 로드 / 이상행동
@@ -44,10 +44,16 @@ def generate_webcam_data(frame,model):
 #과밀도
 def calculate_overcrowding_level(density):
     settings = Setting.query.order_by(Setting.level).all()
+    if not settings:
+        current_app.logger.warning("No settings found. Using default thresholds.")
+        default_levels = [(1, 0.5), (2, 0.8), (3, 1.0)]  # 기본값
+        settings = [Setting(level=level, max_density=max_density) for level, max_density in default_levels]
+
     for setting in settings:
         if density <= setting.max_density:
             return f"Level {setting.level}"
     return "Overcrowded"
+
 
 #자동캡쳐
 def trigger_capture(cctv_id, density, threshold):
@@ -63,21 +69,19 @@ def trigger_capture(cctv_id, density, threshold):
             print(f"캡처 요청 중 오류 발생: {str(e)}")
             
 def get_latest_frame(cctv_id):
-    """
-    지정된 CCTV ID에서 최신 프레임을 가져옵니다.
-    :param cctv_id: CCTV의 ID
-    :return: 프레임 데이터
-    """
     device_index = int(cctv_id.replace('CCTV', '')) - 1
-    cap = cv2.VideoCapture(device_index)
+    cap = cv2.VideoCapture(device_index, cv2.CAP_DSHOW)  # DirectShow 백엔드 사용
+    if not cap.isOpened():
+        raise ValueError(f"Unable to open device {device_index}")
 
-    ret, frame = cap.read()
+    for _ in range(3):  # 최대 3회 재시도
+        ret, frame = cap.read()
+        if ret:
+            cap.release()
+            return frame
+
     cap.release()
-
-    if not ret:
-        raise ValueError("Unable to capture frame from the webcam.")
-    
-    return frame
+    raise ValueError("Failed to capture frame after multiple attempts.")
 
 def calculate_density(frame, model):
     """
@@ -87,7 +91,10 @@ def calculate_density(frame, model):
     :return: 밀집도 값
     """
     results = model.predict(frame)  # YOLO 모델 추론
-    detections = results.xyxy[0].cpu().numpy()  # [x1, y1, x2, y2, confidence, class]
+    try:
+        detections = results[0].boxes.data.cpu().numpy()  # YOLOv8 박스 데이터 추출
+    except AttributeError:
+        raise ValueError("Unexpected results format from YOLO model. Check the model's predict method output.") 
 
     # 사람 클래스(class_id = 0)만 필터링
     person_count = sum(1 for *_, class_id in detections if int(class_id) == 0)
@@ -110,20 +117,20 @@ def annotate_frame_with_density(frame, density):
     return frame
 
 def save_frame_capture(frame, cctv_id, density, overcrowding_level, object_count):
-    """
-    캡처된 프레임을 저장하고 DetectionLog에 관련 정보를 추가합니다.
-    """
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"{cctv_id}_{timestamp}.jpg"
     save_path = os.path.join('static', 'captures', filename)
 
-    # 이미지 저장
+    # 폴더가 없으면 생성
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
     try:
         cv2.imwrite(save_path, frame)
         current_app.logger.info(f"Captured frame saved at {save_path}")
     except Exception as e:
         current_app.logger.error(f"Error saving captured frame: {str(e)}")
         return
+
 
     # DetectionLog에 정보 저장
     try:

@@ -311,17 +311,13 @@ def video_stream(cctv_id, model_type):
             model = load_yolov8_model_2()
         elif model_type == 'behavior':
             model = load_yolov8_model_3()
-        else:
-            return jsonify({"error": "Invalid model type"}), 400
-    except Exception as e:
-        current_app.logger.error(f"Error loading YOLO model: {str(e)}")
+    except Exception:
         return jsonify({"error": "Failed to load YOLO model"}), 500
 
     # 장치 인덱스 계산
     try:
         device_index = int(cctv_id.replace('CCTV', '')) - 1
     except ValueError:
-        current_app.logger.error(f"Invalid CCTV ID format: {cctv_id}")
         return jsonify({"error": "Invalid CCTV ID format"}), 400
 
     # 설정값 가져오기
@@ -329,19 +325,16 @@ def video_stream(cctv_id, model_type):
     thresholds = {setting.level: setting.max_density for setting in settings}
 
     def generate_frames():
-        cap = cv2.VideoCapture(device_index)
+        cap = cv2.VideoCapture(device_index,)
         if not cap.isOpened():
-            current_app.logger.error(f"Failed to open device {device_index}")
             return
 
         while True:
             ret, frame = cap.read()
             if not ret:
-                current_app.logger.error(f"Failed to capture frame from device {device_index}")
-                break
+                continue  # 프레임 캡처 실패 시 루프 지속
 
             try:
-                # 밀집도 계산 (density 모델에서만 처리)
                 if model_type == 'density':
                     density = calculate_density(frame, model)
                     overcrowding_level = "Normal"
@@ -358,7 +351,6 @@ def video_stream(cctv_id, model_type):
                                 overcrowding_level,
                                 object_count
                             )
-                            current_app.logger.info(f"Captured frame for high density: {density}")
                             break
 
                     # 밀집도 시각화
@@ -374,13 +366,14 @@ def video_stream(cctv_id, model_type):
                 # MJPEG 형식으로 프레임 반환
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            except Exception as e:
-                current_app.logger.error(f"Error processing frame: {str(e)}")
-                break
+            except Exception:
+                continue  # 에러 발생 시에도 루프 지속
 
         cap.release()
 
     return Response(stream_with_context(generate_frames()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
 
 @main.route('/settings', methods=['GET', 'POST'])
 def settings():
