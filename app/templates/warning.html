@@ -1,35 +1,46 @@
-{% extends "base.html" %}
-
-{% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/cctv_style.css') }}">
+{% extends "base.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/cctv_style.css') }}"
+  href="{{ url_for('static', filename='css/pagination.css') }}"
+/>
 <div>
-    <h1>밀집도 통계</h1>
-    <hr>
-    <table class="stats-table">
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>탐지 시간</th>
-                <th>탐지 장소</th>
-                <th>밀집 정도</th>
-                <th>과밀 수준</th>
-                <th>감지된 객체 수</th>
-                <th>이미지</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log.id }}</td>
-                <td>{{ log.detection_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                <td>{{ log.location }}</td>
-                <td>{{ log.density_level }}</td>
-                <td>{{ log.overcrowding_level }}</td>
-                <td>{{ log.object_count }}</td>
-                <td><a href="{{ log.image_url }}" target="_blank">이미지 보기</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <h1>밀집도 통계</h1>
+  <hr />
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>번호</th>
+        <th>탐지 시간</th>
+        <th>탐지 장소</th>
+        <th>밀집 레벨</th>
+        <th>감지된 객체 수</th>
+        <th>이미지</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs.items %}
+      <tr>
+        <td>{{ log.id }}</td>
+        <td>{{ log.detection_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>{{ log.location }}</td>
+        <td>{{ log.density_level }} 단계</td>
+        <td>{{ log.object_count }}</td>
+        <td><a href="{{ log.image_url }}" target="_blank">이미지 보기</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <!-- 페이지네이션 -->
+  <div class="pagination">
+    {% if logs.has_prev %}
+    <a href="{{ url_for('main.density_stats', page=logs.prev_num) }}">이전</a>
+    {% endif %}
+    <span>페이지 {{ logs.page }} / {{ logs.pages }}</span>
+    {% if logs.has_next %}
+    <a href="{{ url_for('main.density_stats', page=logs.next_num) }}">다음</a>
+    {% endif %}
+  </div>
 </div>
+
 {% endblock %}

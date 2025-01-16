@@ -1,31 +1,48 @@
-{% extends "base.html" %}
-
-{% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/cctv_style.css') }}">
+{% extends "base.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/cctv_style.css') }}"
+  href="{{ url_for('static', filename='css/pagination.css') }}"
+/>
 <div>
-    <h1>이상행동 감지</h1>
-    <hr>
-    <table class="behavior-table">
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>탐지 시간</th>
-                <th>탐지 장소</th>
-                <th>쓰러짐 상태</th>
-                <th>이미지</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log.id }}</td>
-                <td>{{ log.detection_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                <td>{{ log.location }}</td>
-                <td>{{ log.fall_status }}</td>
-                <td><a href="{{ log.image_url }}" target="_blank">이미지 보기</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <h1>이상행동 감지</h1>
+  <hr />
+  <table class="behavior-table">
+    <thead>
+      <tr>
+        <th>번호</th>
+        <th>탐지 시간</th>
+        <th>탐지 장소</th>
+        <th>쓰러짐 상태</th>
+        <th>이미지</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs.items %}
+      <tr>
+        <td>{{ log.id }}</td>
+        <td>{{ log.detection_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>{{ log.location }}</td>
+        <td>{{ log.fall_status }}</td>
+        <td><a href="{{ log.image_url }}" target="_blank">이미지 보기</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <!-- 페이지네이션 -->
+  <div class="pagination">
+    {% if logs.has_prev %}
+    <a href="{{ url_for('main.abnormal_behavior', page=logs.prev_num) }}"
+      >이전</a
+    >
+    {% endif %}
+    <span>페이지 {{ logs.page }} / {{ logs.pages }}</span>
+    {% if logs.has_next %}
+    <a href="{{ url_for('main.abnormal_behavior', page=logs.next_num) }}"
+      >다음</a
+    >
+    {% endif %}
+  </div>
 </div>
+
 {% endblock %}

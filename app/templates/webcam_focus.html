@@ -7,7 +7,7 @@
   <h1>{{ cctv.location }} (CCTV ID: {{ cctv.cctv_id }})</h1>
   <img
     id="focused-video"
-    src="/video-stream/{{ cctv.cctv_id }}/object"
+    src="/video-stream/{{ cctv.cctv_id }}/behavior"
     alt="Live Stream"
     class="focused-video"
   />
@@ -22,7 +22,19 @@
 <script>
   function switchStream(modelType) {
     const videoElement = document.getElementById("focused-video");
+
+    // src를 변경하여 새로운 스트리밍 모델로 변경
     videoElement.src = `/video-stream/{{ cctv.cctv_id }}/${modelType}`;
+
+    // 비디오 요소가 로드된 후 화면을 새로 업데이트
+    videoElement.onload = () => {
+      console.log(`Stream switched to: ${modelType}`);
+      // 로드가 완료된 후 비디오 요소의 크기를 다시 설정하는 것도 고려할 수 있습니다.
+      videoElement.style.display = "block"; // 기존 화면을 다시 보여줍니다.
+    };
+
+    // 만약 비디오 로딩 중에 이전 화면을 숨기고 새로 로드되었을 때만 보이게 하고 싶다면
+    videoElement.style.display = "none"; // 로딩 중 숨깁니다.
   }
 
   async function captureImage() {
@@ -53,15 +65,6 @@
       alert("이미지가 성공적으로 저장되었습니다.");
     } else {
       alert("이미지 저장 중 오류가 발생했습니다.");
-    }
-  }
-  async function monitorDensity() {
-    const response = await fetch(`/density-data/{{ cctv.cctv_id }}`);
-    const data = await response.json();
-
-    if (data.density > data.threshold) {
-      alert(`밀집도 초과: ${data.density}명`);
-      await captureImage(); // 자동 캡처 실행
     }
   }
 

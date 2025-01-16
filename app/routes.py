@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, Response, current_app, jsonify,  stream_with_context
 from app import db, bcrypt
 from app.models import User, CCTV, DetectionLog, AbnormalBehaviorLog, Setting
-from .utils import generate_webcam_data, load_yolov8_model_1, load_yolov8_model_2, load_yolov8_model_3, get_latest_frame, calculate_density, annotate_frame_with_density, save_frame_capture
+from .utils import get_latest_frame, calculate_density, generate_frames, load_model
 from datetime import datetime
+from pytz import timezone
 import cv2
 import os
 import base64
@@ -139,6 +140,11 @@ def delete_cctv(cctv_id):
     cctv = CCTV.query.get(cctv_id)
     if cctv:
         try:
+            # CCTV가 삭제되기 전에 관련된 로그들을 수동으로 삭제
+            DetectionLog.query.filter_by(cctv_id=cctv.cctv_id).delete()
+            AbnormalBehaviorLog.query.filter_by(cctv_id=cctv.id).delete()
+
+            # CCTV 삭제
             db.session.delete(cctv)
             db.session.commit()
             flash(f"{cctv.location} (ID: {cctv.cctv_id})이 삭제되었습니다.")
@@ -148,6 +154,7 @@ def delete_cctv(cctv_id):
     else:
         flash("존재하지 않는 CCTV입니다.")
     return redirect(url_for('main.cctv_list'))
+
 
 
 # 사용자 관리 페이지
@@ -213,34 +220,37 @@ def add_detection_log():
 
 @main.route('/abnormal-behavior')
 def abnormal_behavior():
-    """
-    이상행동 감지 데이터를 조회하고 템플릿으로 렌더링합니다.
-    """
-    # 데이터베이스에서 이상행동 감지 데이터 조회
+    page = request.args.get('page', 1, type=int)
+
+    # 데이터베이스에서 이상행동 감지 데이터 조회 (페이지네이션 10개 항목)
     logs = AbnormalBehaviorLog.query.join(CCTV).add_columns(
         AbnormalBehaviorLog.id,
         AbnormalBehaviorLog.detection_time,
         CCTV.location,
         AbnormalBehaviorLog.image_url,
         AbnormalBehaviorLog.fall_status
-    ).all()
+    ).order_by(AbnormalBehaviorLog.detection_time.desc()).paginate(page=page, per_page=10, error_out=False)  # 페이지네이션 (1페이지, 10개 항목)
 
     # 템플릿 렌더링
-    return render_template('abnormal_behavior.html', logs=logs)    
+    return render_template('abnormal_behavior.html', logs=logs)   
 
 @main.route('/warning')
 def density_stats():
-    # 밀집도 통계 데이터 조회
+    # 페이지 번호를 쿼리 문자열에서 가져오기 (기본값: 1)
+    page = request.args.get('page', 1, type=int)
+
+    # 밀집도 통계 데이터 조회 (페이지네이션 10개 항목)
     logs = DetectionLog.query.join(CCTV).add_columns(
         DetectionLog.id,
         DetectionLog.detection_time,
         CCTV.location,
         DetectionLog.density_level,
-        DetectionLog.overcrowding_level,
         DetectionLog.object_count,
         DetectionLog.image_url
-    ).all()
+    ).order_by(DetectionLog.detection_time.desc()).paginate(page=page, per_page=10, error_out=False) # 페이지네이션 (1페이지, 10개 항목)
+
     return render_template('warning.html', logs=logs)
+
 
 @main.route('/save-capture', methods=['POST'])
 def save_capture():
@@ -256,7 +266,7 @@ def save_capture():
     image_binary = base64.b64decode(encoded)
 
     # 파일 저장 경로 및 이름 설정
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    timestamp = datetime.now(timezone('Asia/Seoul')).strftime("%Y%m%d%H%M%S")
     filename = f"{cctv_id}_{timestamp}.jpg"
     save_dir = os.path.join("app", "static", "images", "cctv_capture")
     os.makedirs(save_dir, exist_ok=True)
@@ -279,7 +289,7 @@ def update_last_access(cctv_id):
         return jsonify({"error": f"CCTV ID '{cctv_id}' not found"}), 404
 
     # 현재 시간으로 last_access 업데이트
-    cctv.last_access = datetime.utcnow()
+    cctv.last_access = datetime.now(timezone('Asia/Seoul'))
     try:
         db.session.commit()
         return jsonify({"success": True, "message": "Last access updated", "last_access": cctv.last_access.isoformat()}), 200
@@ -292,28 +302,13 @@ def webcam_focus(cctv_id):
     # CCTV ID로 CCTV 데이터를 검색
     cctv = CCTV.query.filter_by(cctv_id=cctv_id).first()
     if not cctv:
-        # CCTV ID가 없을 경우 에러 메시지와 함께 리다이렉트
         flash(f"CCTV ID '{cctv_id}'에 해당하는 데이터가 없습니다.")
         return redirect(url_for('main.cctv_list'))  # CCTV 목록 페이지로 리다이렉트
 
-    # 웹캠 포커스 템플릿 렌더링
     return render_template('webcam_focus.html', cctv=cctv)
 
 @main.route('/video-stream/<cctv_id>/<model_type>')
 def video_stream(cctv_id, model_type):
-    cctv = CCTV.query.filter_by(cctv_id=cctv_id).first_or_404()
-
-    # 선택된 YOLO 모델 로드
-    try:
-        if model_type == 'object':
-            model = load_yolov8_model_1()
-        elif model_type == 'density':
-            model = load_yolov8_model_2()
-        elif model_type == 'behavior':
-            model = load_yolov8_model_3()
-    except Exception:
-        return jsonify({"error": "Failed to load YOLO model"}), 500
-
     # 장치 인덱스 계산
     try:
         device_index = int(cctv_id.replace('CCTV', '')) - 1
@@ -323,57 +318,18 @@ def video_stream(cctv_id, model_type):
     # 설정값 가져오기
     settings = Setting.query.order_by(Setting.level).all()
     thresholds = {setting.level: setting.max_density for setting in settings}
+    
+    # 모델 로드
+    try:
+        model = load_model(model_type)  # 모델을 한번만 로드
+    except Exception as e:
+        return jsonify({"error": f"Failed to load YOLO model: {str(e)}"}), 500
 
-    def generate_frames():
-        cap = cv2.VideoCapture(device_index,)
-        if not cap.isOpened():
-            return
-
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                continue  # 프레임 캡처 실패 시 루프 지속
-
-            try:
-                if model_type == 'density':
-                    density = calculate_density(frame, model)
-                    overcrowding_level = "Normal"
-                    object_count = int(density * frame.shape[0] * frame.shape[1])
-
-                    # 기준값과 비교하여 캡처 여부 결정
-                    for level, max_density in thresholds.items():
-                        if density > max_density:
-                            overcrowding_level = f"Level {level}"
-                            save_frame_capture(
-                                frame,
-                                cctv.id,
-                                density,
-                                overcrowding_level,
-                                object_count
-                            )
-                            break
-
-                    # 밀집도 시각화
-                    processed_frame = annotate_frame_with_density(frame, density)
-                else:
-                    # YOLO 모델을 이용해 프레임 처리
-                    processed_frame = generate_webcam_data(frame, model)
-
-                # 프레임을 JPEG로 인코딩
-                _, buffer = cv2.imencode('.jpg', processed_frame)
-                frame = buffer.tobytes()
-
-                # MJPEG 형식으로 프레임 반환
-                yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            except Exception:
-                continue  # 에러 발생 시에도 루프 지속
-
-        cap.release()
-
-    return Response(stream_with_context(generate_frames()), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
+    # 스트리밍을 위해 모델과 함께 새로 프레임을 생성
+    return Response(
+        stream_with_context(generate_frames(model, model_type, device_index, thresholds, cctv_id)),
+        mimetype='multipart/x-mixed-replace; boundary=frame'
+    )
 
 @main.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -456,26 +412,3 @@ def delete_setting(setting_id):
         flash(f"설정 삭제 중 오류가 발생했습니다: {e}")
     
     return redirect(url_for('main.settings'))
-
-@main.route('/density-data/<cctv_id>', methods=['GET'])
-def get_density_data(cctv_id):
-    # 설정값 가져오기
-    settings = Setting.query.order_by(Setting.level).all()
-    thresholds = {setting.level: setting.max_density for setting in settings}
-
-    # 현재 밀집도 계산 (예시: 미리 저장된 값 또는 YOLO에서 호출)
-    frame = get_latest_frame(cctv_id)  # 실시간 프레임을 가져오는 사용자 정의 함수
-    density = calculate_density(frame, load_yolov8_model_2())
-
-    # 기준값과 비교하여 현재 단계 결정
-    overcrowding_level = "Overcrowded"
-    for level, max_density in thresholds.items():
-        if density <= max_density:
-            overcrowding_level = f"Level {level}"
-            break
-
-    return jsonify({
-        "density": density,
-        "threshold": thresholds,
-        "overcrowding_level": overcrowding_level
-    })

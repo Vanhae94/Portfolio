@@ -1,0 +1,34 @@
+[2025-01-16 10:34:41,353] ERROR in routes: Error fetching CCTV data: Error creating backref 'cctv' on relationship 'CCTV.detection_logs': property of that name exists on mapper 'Mapper[DetectionLog(detection_logs)]'
+Traceback (most recent call last):
+  File "D:\AI3\cctv_2\app\routes.py", line 22, in index
+    cctvs = CCTV.query.all()
+            ^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\flask_sqlalchemy\model.py", line 22, in __get__
+    return cls.query_class(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\query.py", line 275, in __init__
+    self._set_entities(entities)
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    coercions.expect(
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\sql\coercions.py", line 388, in expect
+    insp._post_inspect
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1253, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2722, in _post_inspect
+    self._check_configure()
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2399, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4215, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4256, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2416, in _post_configure_properties
+    prop.init()
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\interfaces.py", line 589, in init
+    self.do_init()
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1647, in do_init
+    self._generate_backref()
+  File "C:\Users\M\anaconda3\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2075, in _generate_backref
+    raise sa_exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Error creating backref 'cctv' on relationship 'CCTV.detection_logs': property of that name exists on mapper 'Mapper[DetectionLog(detection_logs)]'

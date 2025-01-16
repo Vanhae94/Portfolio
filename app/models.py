@@ -35,20 +35,19 @@ class DetectionLog(db.Model):
     __tablename__ = 'detection_logs'
     id = db.Column(db.Integer, primary_key=True)
     detection_time = db.Column(db.DateTime, default=datetime.utcnow)  # 탐지 시간
-    cctv_id = db.Column(db.Integer, db.ForeignKey('cctvs.id'), nullable=False)  # CCTV 참조
+    cctv_id = db.Column(db.String(50), db.ForeignKey('cctvs.cctv_id', ondelete="CASCADE"), nullable=False)  # CCTV 참조
     density_level = db.Column(db.String(50), nullable=False)  # 밀집 정도
-    overcrowding_level = db.Column(db.String(50), nullable=False)  # 과밀 수준
     object_count = db.Column(db.Integer, nullable=False)  # 감지된 객체 수
     image_url = db.Column(db.String(255), nullable=False)  # 이미지 링크
 
     # 관계 설정
-    cctv = db.relationship('CCTV', backref=db.backref('detection_logs', lazy=True))
+    cctv = db.relationship('CCTV', backref='detection_logs', lazy=True)
 
 class AbnormalBehaviorLog(db.Model):
     __tablename__ = 'abnormal_behavior_logs'
     id = db.Column(db.Integer, primary_key=True)
     detection_time = db.Column(db.DateTime, default=datetime.utcnow)  # 탐지 시간
-    cctv_id = db.Column(db.Integer, db.ForeignKey('cctvs.id'), nullable=False)  # CCTV 참조
+    cctv_id = db.Column(db.String(50), db.ForeignKey('cctvs.cctv_id', ondelete="CASCADE"), nullable=False)  # CCTV 참조
     image_url = db.Column(db.String(255), nullable=False)  # 이미지 링크
     fall_status = db.Column(db.String(50), nullable=False, default="정상")  # 쓰러짐 상태 (예: "정상", "쓰러짐")
 
@@ -59,7 +58,7 @@ class Setting(db.Model):
     __tablename__ = 'settings'
     id = db.Column(db.Integer, primary_key=True)
     level = db.Column(db.Integer, nullable=False, unique=True)  # 단계 (1~5)
-    max_density = db.Column(db.Float, nullable=False)  # 최대 밀집도 기준
+    max_density = db.Column(db.Integer, nullable=False)  # 최대 밀집도 기준
     description = db.Column(db.String(255), nullable=True)  # 설명
 
     def __repr__(self):
